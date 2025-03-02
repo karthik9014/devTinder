@@ -1,9 +1,0 @@
-- npm init
-- npm i express
-- src/app.js
-- Install nodemon to update the server automatically i.e., npm i -g nodemon [instead of running node src/app.js everytime]
-- Order the routes matter alot
-
-app.use("/user",(req, res) => {
-    res.send("User Checked Succesfully")
-})
