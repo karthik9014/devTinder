@@ -1,0 +1,91 @@
+- npm init
+- npm i express
+- src/app.js
+- Install nodemon to update the server automatically i.e., npm i -g nodemon [instead of running node src/app.js everytime]
+- Order the routes matter alot
+
+=======================================================
+const express = require('express');
+
+const app = express();
+
+app.listen(7000, () => console.log("Running in 7000"));
+
+app.get("/",(req, res, next) => {
+    next();
+})
+app.get("/user",(req, res, next) => {
+    res.send("User Checked Succesfully")
+})
+
+app.use("/user",(req, res, next) => {
+    res.send("User GET call Succesful");
+    next();
+},(req, res, next) => {
+    res.send("User GET call Succesful - 2"); // won't be executed(Gets error)
+})
+
+app.use("/user",(req, res, next) => {
+    // res.send("User GET call Succesful - 1");
+    next();
+},(req, res, next) => {
+    next();
+    // res.send("User GET call Succesful - 2")
+},(req, res, next) => {
+    res.send("User GET call Succesful - 3")
+});
+
+app.use("/user",fn1,fn2,fn3);
+app.use("/user",[fn1,fn2,fn3]);
+
+
+==========================================================
+# Routing Techniques
+"/use?r" -> /usr
+"/u(se)?r" -> /ur
+"/u(se)+r" -> /useseseser or /user
+"/use+r" -> /useeeer 
+"/use*r" -> /usedskfhsdkdkfhksdhfr or /usefkjsdr
+/a/ -> We can also use regular expressions for routes 
+"/user/:userId/:name" -> /user/567/Karthik -> req.params => {userId:"567", name:"Karthik"} // Accessing Dynamic Routes
+                      -> /user?userId=567%name=Karthik -> req.query => {userId:"567", name:"Karthik"} // Accessing Query Parameters
+
+===========================================================
+# Middleware Example
+adminAuth -> function will be called for all the /admin routes
+const adminAuth = (req, res, next) => {
+    const token = "xyz";
+    const isAuthorized = token === "xyz";
+    if (isAuthorized) {
+        next();
+    } else {
+        res.status(401).send("User Authentication Failed");
+    }
+}
+app.use("/admin", adminAuth);
+
+app.use("/admin/getDetails", (req, res, next) => {
+    res.send("Sent details succesfully")
+})
+
+=========================================================================
+# Error Handling (try-catch also can be used for individual middlewares)
+app.use("/admin", (req, res, next) => {
+    throw new Error("Something went wrong");
+});
+app.use("/", (err, req, res, next) => {
+    if (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
