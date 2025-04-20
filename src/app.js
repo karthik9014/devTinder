@@ -1,24 +1,34 @@
 const express = require('express');
 const connectDB = require('./config/database');
-const UserModel = require('./models/user')
+const cookieParser = require('cookie-parser');
+const authRouter = require('./routes/auth');
+const profileRouter = require('./routes/profile');
+const requestRouter = require('./routes/request');
+const userRouter = require('./routes/user');
+const cors = require('cors');
+
 const app = express();
+app.use(
+    cors({
+        origin: 'http://localhost:5173',
+        credentials: true,
+    })
+);
+app.use(express.json());
+app.use(cookieParser());
 
-app.post("/signup", async (req, res) => {
-    const userObj = { firstName: "venkata kartheek", lastName: "pagolu", emailId: "pvpvk@pvk.com", age: 20 }
-    const user = new UserModel(userObj);
-    try {
-        await user.save();
-        res.send('User Added Successfully')
-    } catch (error) {
-        console.log(error.message);
-        res.status(400).send('User Failed to Add');
-    }
+app.use('/', authRouter);
+app.use('/', profileRouter);
+app.use('/', requestRouter);
+app.use('/', userRouter);
 
-})
-
-connectDB().then((res) => {
-    console.log('DB connection Succesful' + res);
-    app.listen(7000, () => console.log("Running in 7000"));
-}).catch((err) => {
-    console.log(err);
-})
+connectDB()
+    .then(() => {
+        console.log('Connected to Database Successfully!!');
+        app.listen(7777, () => {
+            console.log('Server is running on port 7777');
+        });
+    })
+    .catch(() => {
+        console.log('Error connecting to Database');
+    });
