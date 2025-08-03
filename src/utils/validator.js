@@ -14,7 +14,7 @@ const validateSignupData = (req) => {
     } else if (!validator.isEmail(emailId)) {
         throw new Error('Email is not valid');
     } else if (!validator.isStrongPassword(password)) {
-        validator.isAlpha('');
+        // validator.isAlpha('');
         throw new Error('Password is not strong enough');
     }
 };

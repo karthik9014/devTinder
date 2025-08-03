@@ -1,11 +1,12 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const cookieParser = require('cookie-parser');
-const authRouter = require('./routes/auth');
-const profileRouter = require('./routes/profile');
-const requestRouter = require('./routes/request');
-const userRouter = require('./routes/user');
+const authRouter = require('./routes/auth.route');
+const profileRouter = require('./routes/profile.route');
+const requestRouter = require('./routes/request.route');
+const userRouter = require('./routes/user.route');
 const cors = require('cors');
+const errorHandler = require('./middlewares/error.middleware')
 
 const app = express();
 app.use(
@@ -21,6 +22,9 @@ app.use('/', authRouter);
 app.use('/', profileRouter);
 app.use('/', requestRouter);
 app.use('/', userRouter);
+
+// Error Handling
+app.use(errorHandler);
 
 connectDB()
     .then(() => {

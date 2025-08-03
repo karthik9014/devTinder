@@ -1,8 +1,8 @@
 const express = require('express');
-const { authenticateUser } = require('../middlewares/auth');
+const { authenticateUser } = require('../middlewares/auth.middleware');
 const { validateSendRequestData, validateRequestReviewData } = require('../utils/validator');
-const ConnectionRequest = require('../models/connectionRequest');
-const User = require('../models/user');
+const ConnectionRequest = require('../models/connectionRequest.model');
+const User = require('../models/user.model');
 const requestRouter = express.Router();
 
 requestRouter.post('/request/send/:status/:toUserId', authenticateUser, async (req, res) => {

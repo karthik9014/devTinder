@@ -54,8 +54,8 @@ const UserSchema = new mongoose.Schema(
     { timestamps: true }
 );
 UserSchema.methods.getJwt = function () {
-    const { emailId } = this;
-    const token = jwt.sign({ emailId: emailId }, 'secret', { expiresIn: '1d' });
+    const { _id } = this;
+    const token = jwt.sign({ _id: _id }, 'secret', { expiresIn: '1d' });
     return token;
 };
 UserSchema.methods.isPasswordValid = async function (passwordEnteredByUser) {

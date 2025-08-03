@@ -1,7 +1,7 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
 const { validateSignupData, validateLoginData } = require('../utils/validator');
-const UserModel = require('../models/user');
+const UserModel = require('../models/user.model');
 const { ALLOWED_USER_SAFE_DATA } = require('../constants/types');
 
 const authRouter = express.Router();
